@@ -10,6 +10,9 @@ https://cookiecutter-django.readthedocs.io/en/latest/developing-locally-docker.h
     POSTGRES_USER=<postgres>
     POSTGRES_PASSWORD=<postgres>
     POSTGRES_HOST=<postgres>
+    EMAIL_HOST=<smtp.gmail.com>
+    EMAIL_HOST_USER=<email>
+    EMAIL_HOST_PASSWORD=<password>
 
 # Migrate
 
