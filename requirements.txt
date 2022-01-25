@@ -26,3 +26,7 @@ uritemplate==4.1.1
 urllib3==1.26.7
 django-cors-headers==3.10.1
 djangorestframework-jwt==1.11.0
+django-phonenumber-field==6.0.0
+phonenumbers==8.12.41
+django-countries==7.2.1
+django-rest-passwordreset==1.2.1

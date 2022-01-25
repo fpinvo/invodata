@@ -42,6 +42,10 @@ LOCAL_APPS = [
 THIRD_PARTY_APPS = [
     'corsheaders',
     'drf_yasg',
+    'phonenumber_field',
+    'django_countries',
+    'django_rest_passwordreset',
+    'rest_framework',
 
 ]
 
@@ -52,7 +56,6 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "rest_framework",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -73,7 +76,7 @@ ROOT_URLCONF = 'InvoDataBackend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,14 +94,20 @@ WSGI_APPLICATION = 'InvoDataBackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_NAME'),
+#         'USER': os.getenv('POSTGRES_USER'),
+#         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+#         'HOST': os.getenv('POSTGRES_HOST'),
+#         'PORT': 5432,
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_NAME'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite3',
     }
 }
 
@@ -154,11 +163,13 @@ JWT_AUTH = {
 
     # allow refreshing of tokens
     'JWT_ALLOW_REFRESH': True,
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.services.jwt_response_payload_handler',
 
     # this is the maximum time AFTER the token was issued that
     # it can be refreshed.  exprired tokens can't be refreshed.
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=30),
 }
+AUTH_USER_MODEL = 'users.User'
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
@@ -168,6 +179,14 @@ SWAGGER_SETTINGS = {
             'in': 'header'
         }
     },
-    # 'USE_SESSION_AUTH': False,
+    'USE_SESSION_AUTH': False,
 }
 CORS_ORIGIN_ALLOW_ALL = True
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'nitrrrx@gmail.com'
+EMAIL_HOST_PASSWORD = 'Pakistan_1824'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
