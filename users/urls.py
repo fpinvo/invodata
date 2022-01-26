@@ -2,8 +2,9 @@
 from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 from django.urls import path, include
-from rest_framework_jwt.views import obtain_jwt_token, verify_jwt_token, refresh_jwt_token
+from rest_framework_jwt.views import verify_jwt_token, refresh_jwt_token, ObtainJSONWebToken
 
+from .serializers import CustomJWTSerializer
 from .views import UsersViewSet, UserSignupView
 
 router = DefaultRouter()
@@ -11,7 +12,7 @@ router = DefaultRouter()
 router.register('', UsersViewSet, '')
 
 urlpatterns = [
-    path('login/', obtain_jwt_token),
+    path('login/', ObtainJSONWebToken.as_view(serializer_class=CustomJWTSerializer)),
     path('token-refresh/', refresh_jwt_token),
     path('token-verify/', verify_jwt_token),
     path('signup/', UserSignupView.as_view()),

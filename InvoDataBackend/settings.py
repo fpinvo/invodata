@@ -163,6 +163,8 @@ JWT_AUTH = {
 
     # allow refreshing of tokens
     'JWT_ALLOW_REFRESH': True,
+
+    # add user detail in response
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.services.jwt_response_payload_handler',
 
     # this is the maximum time AFTER the token was issued that
@@ -173,7 +175,7 @@ AUTH_USER_MODEL = 'users.User'
 
 SWAGGER_SETTINGS = {
     'SECURITY_DEFINITIONS': {
-        'Bearer': {
+        'JWT': {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header'

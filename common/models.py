@@ -3,6 +3,7 @@ from django.db import models
 
 from users.models import User
 
+
 class TimeStampedModel(models.Model):
     """
     Abstract Time Stamp Model for all Models
@@ -48,3 +49,26 @@ class ProjectUser(TimeStampedModel):
 
     def __str__(self):
         return f"{self.project.name} - {self.user.username} - {self.role.name}"
+
+
+class ProviderCategory(TimeStampedModel):
+    name = models.CharField(max_length=255, unique=True, help_text="CRM")
+
+
+class Provider(TimeStampedModel):
+    Source = 'Source'
+    Target = 'Target'
+    PROVIDER_TYPE = (
+        (Source, 'Source'),
+        (Target, 'Target'),
+    )
+    name = models.CharField(max_length=255, help_text="Accelo")
+    category = models.ForeignKey(ProviderCategory, on_delete=models.CASCADE)
+    connection_type = models.CharField(max_length=255, null=True, blank=True)
+    default_ado_net_provider = models.CharField(max_length=255, help_text="System.Data.CData.API")
+    integration_type = models.CharField(max_length=20, choices=PROVIDER_TYPE, default=Source)
+    is_dialect = models.BooleanField(default=False)
+    is_dialect_over_ado_net = models.BooleanField(default=False)
+    is_dialect_over_odbc = models.BooleanField(default=False)
+    logo_url = models.CharField(max_length=255, help_text="Accelo.apip")
+    real_provider = models.CharField(max_length=255, help_text="Generic ADO.NET")

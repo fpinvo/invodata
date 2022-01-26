@@ -2,7 +2,7 @@ from django.contrib.auth.models import Permission
 from rest_flex_fields import FlexFieldsModelSerializer
 from rest_framework import serializers
 
-from common.models import Role, Project, ProjectUser
+from common.models import Role, Project, ProjectUser, ProviderCategory, Provider
 from users.serializers import UserSerializer
 
 
@@ -81,4 +81,37 @@ class ProjectUserListSerializer(serializers.ModelSerializer):
             'project',
             'user',
             'role'
+        ]
+
+
+class ProviderCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProviderCategory
+        fields = [
+            'id',
+            'name',
+        ]
+
+
+class ProviderSerializer(serializers.ModelSerializer):
+    category_name = serializers.ReadOnlyField(source='category.name')
+
+    class Meta:
+        model = Provider
+        extra_kwargs = {
+            'category': {'write_only': True}
+        }
+        fields = [
+            'id',
+            'name',
+            'category',
+            'category_name',
+            'connection_type',
+            'default_ado_net_provider',
+            'integration_type',
+            'is_dialect',
+            'is_dialect_over_ado_net',
+            'is_dialect_over_odbc',
+            'logo_url',
+            'real_provider',
         ]

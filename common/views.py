@@ -7,10 +7,10 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import Serializer
 from django.db.models import Q
 
-from common.models import Role, Project, ProjectUser
+from common.models import Role, Project, ProjectUser, ProviderCategory, Provider
 from common.permissions import get_permission_class
 from common.serializers import PermissionSerializer, RoleSerializer, RoleCreateSerializer, ProjectSerializer, \
-    ProjectUserSerializer, ProjectUserListSerializer
+    ProjectUserSerializer, ProjectUserListSerializer, ProviderCategorySerializer, ProviderSerializer
 
 
 class PermissionViewSet(ModelViewSet):
@@ -94,7 +94,6 @@ class ProjectUsersViewSet(ModelViewSet):
     ]
     http_method_names = ["get"]
 
-
     def get_serializer_class(self):
         action_serializer_mapping = {
             'list': ProjectUserListSerializer,
@@ -111,3 +110,22 @@ class ProjectUsersViewSet(ModelViewSet):
 
     def get_queryset(self):
         return ProjectUser.objects.all()
+
+
+class ProviderCategoryViewSet(ModelViewSet):
+    serializer_class = ProviderCategorySerializer
+    queryset = ProviderCategory.objects.all()
+
+
+class ProviderViewSet(ModelViewSet):
+    permission_classes = [
+        IsAuthenticated,
+    ]
+    serializer_class = ProviderSerializer
+    queryset = Provider.objects.all()
+
+    def get_permissions(self):
+        """Permissions override"""
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [IsAdminUser()]
+        return super().get_permissions()
